@@ -23,3 +23,26 @@ export const getUser = async (req, res) => {
         });
     };
 };
+
+export const postUsers = async (req, res) => {
+
+    const { name, lastname, username, email, password, role } = req.body;
+
+    try {
+        const [rows] = await pool.query('INSERT INTO users (name, lastname, username, email, password, role) VALUES (?, ?, ?, ?, ?, ?)', [name, lastname, username, email, password, role]);
+
+        res.send({
+            id: rows.insertId,
+            name,
+            lastname,
+            username,
+            email,
+            password,
+            role
+        });
+    } catch (e) {
+        return res.status(500).json({
+            message: 'Error inserting a new user'
+        });
+    }
+};
